@@ -4,7 +4,7 @@ import { exit } from 'process';
 import chalk from 'chalk';
 import ora, { oraPromise } from 'ora';
 
-export class DdbService {
+export class DynamoService {
     private dynamoDBDocument: DynamoDBDocument;
 
     constructor(ddbClientConfig = {}) {

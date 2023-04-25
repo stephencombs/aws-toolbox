@@ -3,12 +3,12 @@ import chalk from 'chalk';
 import fuzzy from 'fuzzy';
 import inquirer from 'inquirer';
 import inquirerPrompt from 'inquirer-autocomplete-prompt';
-import { DdbService } from './service.js';
+import { DynamoService } from './service.js';
 
 // Register Autocomplete Prompt Type
 inquirer.registerPrompt('autocomplete', inquirerPrompt);
 
-const ddbService = new DdbService();
+const ddbService = new DynamoService();
 
 // Action Prompts
 async function clearPrompt() {
@@ -23,10 +23,12 @@ async function clearPrompt() {
 }
 
 async function copyPrompt() {
-    const { source, dest } = await inquirer.prompt([
-        await createTablePrompt('source', `Select the ${chalk.blue.bold('source')} table:`),
-        await createTablePrompt('dest', `Select the ${chalk.yellow.bold('destination')} table:`)
-    ]);
+    const { source, dest } = await inquirer.prompt(
+        await Promise.all([
+            createTablePrompt('source', `Select the ${chalk.blue.bold('source')} table:`),
+            createTablePrompt('dest', `Select the ${chalk.yellow.bold('destination')} table:`)
+        ])
+    );
 
     await ddbService.copy(source, dest);
 }

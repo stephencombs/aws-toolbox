@@ -1,5 +1,4 @@
 import select from '@inquirer/select';
-import { Choice } from '../types.js';
 import { clearPrompt, copyPrompt, listPrompt } from './action.js';
 
 const dynamoDbActions = [
@@ -18,14 +17,14 @@ const dynamoDbActions = [
         value: 'list',
         description: 'Just a quick log of all tables on your account'
     }
-];
+] as const;
 
 // Entrypoint for this file
 export async function ddbActionsPrompt() {
     const choice = (await select({
         message: 'Select an action:',
-        choices: dynamoDbActions
-    })) as Choice;
+        choices: dynamoDbActions as any
+    })) as DynamoDBAction;
 
     switch (choice) {
         case 'copy':
@@ -39,3 +38,6 @@ export async function ddbActionsPrompt() {
             break;
     }
 }
+
+// Type Definitions
+type DynamoDBAction = (typeof dynamoDbActions)[number]['value'];
