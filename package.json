@@ -1,10 +1,10 @@
 {
   "bin": {
-    "aws-tool": "./bin/index.js"
+    "aws-toolbox": "./bin/index.js"
   },
-  "name": "aws-tool",
+  "name": "aws-toolbox",
   "version": "0.0.1",
-  "description": "Prompt-style tool for the AWS CLI",
+  "description": "Prompt-style tools for the AWS CLI",
   "main": "bin/index.js",
   "scripts": {
     "build": "npx tsc",
