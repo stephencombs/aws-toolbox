@@ -29,10 +29,10 @@ export class DynamoService {
         }
 
         spinner.succeed(`Found ${result.length} tables`);
-        console.table(result);
+        console.log(result);
     }
 
-    async clear(source: string) {
+    async clear(source: string): Promise<void> {
         let data: Record<string, any>[] | undefined = [];
 
         const result = await oraPromise(

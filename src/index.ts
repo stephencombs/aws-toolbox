@@ -1,10 +1,11 @@
 #!/usr/bin/env node
 
-import confirm from '@inquirer/confirm';
 import select from '@inquirer/select';
 import chalk from 'chalk';
 import { awsOrange } from './common/colors.js';
 import { ddbActionsPrompt } from './ddb/index.js';
+import inquirer from 'inquirer';
+import { s3ActionsPrompt } from './s3/index.js';
 
 const toolboxChoices = [
     {
@@ -34,13 +35,16 @@ async function init() {
             await ddbActionsPrompt();
             break;
         case 's3':
-            console.log(chalk.yellow('There are currently no actions for S3'));
+            await s3ActionsPrompt();
             break;
     }
 
     // Check if user would like to perform another action
-    const isDone = await confirm({ message: 'Is that your last action?' });
-    if (!isDone) await init();
+    const { isDone } = await inquirer.prompt({ type: 'confirm', name: 'isDone', message: 'Is that your last action?' });
+    if (!isDone) {
+        console.clear();
+        await init();
+    }
 }
 
 // Startup Call
