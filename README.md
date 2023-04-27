@@ -1,6 +1,6 @@
 # AWS Toolbox
 
-[![npm](https://badge.fury.io/js/inquirer.svg)](https://badge.fury.io/js/inquirer)
+[![npm](https://badge.fury.io/js/aws-toolbox.svg)](https://badge.fury.io/js/aws-toolbox)
 Complete your work from the terminal, without touching your mouse.
 
 _Known issues are tracked [here](./known_issues)_

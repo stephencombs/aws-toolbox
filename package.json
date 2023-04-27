@@ -1,6 +1,6 @@
 {
     "name": "aws-toolbox",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "Prompt-style tools for the AWS CLI",
     "author": {
         "name": "Stephen Combs",
