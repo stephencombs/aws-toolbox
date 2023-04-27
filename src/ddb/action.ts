@@ -47,7 +47,8 @@ async function createTablePrompt(name: string, message: string) {
         type: 'autocomplete',
         name: name,
         message: message,
-        pageSize: 5,
+        loop: false,
+        pageSize: 10,
         source: (_: unknown, input = '') => fuzzySearch(input, tablesSource)
     };
 }

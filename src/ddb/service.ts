@@ -1,21 +1,14 @@
-import { DynamoDBClient, ListTablesCommand, DescribeTableCommand } from '@aws-sdk/client-dynamodb';
-import { DynamoDBDocument } from '@aws-sdk/lib-dynamodb';
+import { ListTablesCommand, DescribeTableCommand, DynamoDBClientConfig } from '@aws-sdk/client-dynamodb';
 import { exit } from 'process';
 import chalk from 'chalk';
 import ora, { oraPromise } from 'ora';
+import { getDynamoDBClient } from '../common/clients.js';
 
 export class DynamoService {
-    private dynamoDBDocument: DynamoDBDocument;
-
-    constructor(ddbClientConfig = {}) {
-        const dynamoDbClient = new DynamoDBClient(ddbClientConfig);
-        this.dynamoDBDocument = DynamoDBDocument.from(dynamoDbClient, {
-            marshallOptions: { removeUndefinedValues: true }
-        });
-    }
+    constructor(readonly ddbClientConfig: DynamoDBClientConfig = {}) {}
 
     async getTables() {
-        const result = await this.dynamoDBDocument.send(new ListTablesCommand({}));
+        const result = await getDynamoDBClient(this.ddbClientConfig).send(new ListTablesCommand({}));
         return result.TableNames ?? [];
     }
 
@@ -36,7 +29,7 @@ export class DynamoService {
         let data: Record<string, any>[] | undefined = [];
 
         const result = await oraPromise(
-            this.dynamoDBDocument.scan({
+            getDynamoDBClient(this.ddbClientConfig).scan({
                 TableName: source.trim()
             }),
             {
@@ -54,7 +47,7 @@ export class DynamoService {
         }
 
         const detailsResponse = await oraPromise(
-            this.dynamoDBDocument.send(new DescribeTableCommand({ TableName: source.trim() })),
+            getDynamoDBClient(this.ddbClientConfig).send(new DescribeTableCommand({ TableName: source.trim() })),
             {
                 text: `Retrieving details for ${chalk.blue.bold(source)}`,
                 successText: `Details retrieved for ${chalk.blue.bold(source)}`,
@@ -72,7 +65,7 @@ export class DynamoService {
         await oraPromise(
             Promise.all(
                 data.map((item) =>
-                    this.dynamoDBDocument.delete({
+                    getDynamoDBClient(this.ddbClientConfig).delete({
                         TableName: source.trim(),
                         Key: {
                             [pkName]: item[pkName]
@@ -92,7 +85,7 @@ export class DynamoService {
         let data: Record<string, any>[] | undefined = [];
 
         const result = await oraPromise(
-            this.dynamoDBDocument.scan({
+            getDynamoDBClient(this.ddbClientConfig).scan({
                 TableName: source.trim()
             }),
             {
@@ -112,7 +105,7 @@ export class DynamoService {
         await oraPromise(
             Promise.all(
                 data.map((item) =>
-                    this.dynamoDBDocument.put({
+                    getDynamoDBClient(this.ddbClientConfig).put({
                         TableName: dest.trim(),
                         Item: item,
                         ReturnValues: 'ALL_OLD'
