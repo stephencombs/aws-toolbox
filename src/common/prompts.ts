@@ -21,3 +21,21 @@ export function confirm(config: { name: string; message: string }) {
 		message: config.message
 	})
 }
+
+export function fuzzypath(config: {
+	name: string
+	message: string
+	type: 'any' | 'directory' | 'file'
+	suggestOnly: boolean
+	depth: number
+}) {
+	return {
+		type: 'fuzzypath',
+		name: config.name,
+		itemType: config.type,
+		rootPath: '/',
+		message: config.message,
+		suggestOnly: config.suggestOnly,
+		depthLimit: config.depth
+	}
+}

@@ -3,13 +3,20 @@
 import { GetCallerIdentityCommand, STSClient } from '@aws-sdk/client-sts'
 import select from '@inquirer/select'
 import chalk from 'chalk'
+import inquirer from 'inquirer'
+import autocompletePrompt from 'inquirer-autocomplete-prompt'
+import fuzzypathPrompt from 'inquirer-fuzzy-path'
 import { oraPromise } from 'ora'
 import { exit } from 'process'
-import { awsOrange, boldGreen } from './common/colors.js'
+import { awsOrange, boldWhite } from './common/colors.js'
 import { confirm } from './common/prompts.js'
+import { prettifyActions } from './common/utils.js'
 import { ddbActionsPrompt, dynamoDbActions } from './ddb/index.js'
 import { s3Actions, s3ActionsPrompt } from './s3/index.js'
 import { secretsActionPrompt, secretsActions } from './secrets/index.js'
+
+inquirer.registerPrompt('autocomplete', autocompletePrompt)
+inquirer.registerPrompt('fuzzypath', fuzzypathPrompt)
 
 // Will error if the user has invalid/expired credentials
 try {
@@ -23,9 +30,7 @@ try {
 		if (e.name === 'CredentialsProviderError')
 			console.log(
 				chalk.red(
-					`Your credientials are invalid or expired, please login using ${chalk.white.bold(
-						'`aws sso login`'
-					)}`
+					`Your credientials are invalid or expired, please login using ${boldWhite('`aws sso login`')}`
 				)
 			)
 	exit(1)
@@ -35,27 +40,17 @@ const toolboxChoices = [
 	{
 		name: 'DynamoDB',
 		value: 'ddb',
-		description: `${boldGreen('Actions')}: ${dynamoDbActions.map((action) => action.name).join(', ')}`
+		description: prettifyActions(dynamoDbActions)
 	},
 	{
 		name: 'S3',
 		value: 's3',
-		description: `${boldGreen('Actions')}: ${s3Actions.map((action) => action.name).join(', ')}`
+		description: prettifyActions(s3Actions)
 	},
-	// {
-	// 	name: 'Cloudwatch',
-	// 	value: 'cwatch',
-	// 	description: `${boldGreen('Actions')}: ${cloudwatchActions.map((action) => action.name).join(', ')}`
-	// },
-	// {
-	// 	name: 'Lambda',
-	// 	value: 'lambda',
-	// 	description: `${boldGreen('Actions')}: ${lambdaActions.map((action) => action.name).join(', ')}`
-	// },
 	{
 		name: 'SecretsManager',
 		value: 'secrets',
-		description: `${boldGreen('Actions')}: ${secretsActions.map((action) => action.name).join(', ')}`
+		description: prettifyActions(secretsActions)
 	}
 ] as const
 
@@ -77,12 +72,6 @@ async function init() {
 		case 's3':
 			await s3ActionsPrompt()
 			break
-		// case 'cwatch':
-		// 	await cloudwatchActionsPrompt()
-		// 	break
-		// case 'lambda':
-		// 	await lambdaActionsPrompt()
-		// 	break
 		case 'secrets':
 			await secretsActionPrompt()
 			break
@@ -93,6 +82,7 @@ async function init() {
 		name: 'another',
 		message: 'Would you like to perform another action?'
 	})
+
 	if (another) {
 		console.clear()
 		await init()

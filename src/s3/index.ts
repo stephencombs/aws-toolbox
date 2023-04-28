@@ -1,5 +1,5 @@
 import select from '@inquirer/select'
-import { clearPrompt, copyPrompt, listObjectsPrompt } from './action.js'
+import { clearPrompt, copyPrompt, downloadPrompt, listObjectsPrompt } from './action.js'
 
 export const s3Actions = [
 	{
@@ -22,6 +22,11 @@ export const s3Actions = [
 		name: 'List Objects',
 		value: 'listObjs',
 		description: 'Logs a list of up to 1000 objects in Bucket'
+	},
+	{
+		name: 'Download',
+		value: 'download',
+		description: 'Download an object from a Bucket'
 	}
 ] as const
 
@@ -41,6 +46,9 @@ export async function s3ActionsPrompt() {
 			break
 		case 'listObjs':
 			await listObjectsPrompt()
+			break
+		case 'download':
+			await downloadPrompt()
 			break
 	}
 }

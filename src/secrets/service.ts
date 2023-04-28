@@ -6,7 +6,7 @@ export class SecretsService {
 
 	async getSecrets() {
 		const results = await getSecretsManagerClient(this.secretsManagerConfig).send(new ListSecretsCommand({}))
-		return results.SecretList!.map((secret) => secret.Name).filter((name): name is string => !!name) ?? []
+		return results.SecretList?.map((secret) => secret.Name).filter((name): name is string => !!name) ?? []
 	}
 
 	async describe(secret: string) {
