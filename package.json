@@ -13,7 +13,8 @@
 	"scripts": {
 		"build": "npx tsc",
 		"local": "npm i -g . && aws-toolbox",
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"prepare": "husky install"
 	},
 	"type": "module",
 	"main": "./bin/index.js",
@@ -43,7 +44,8 @@
 		"nodemon": "^2.0.22",
 		"prettier": "^2.8.8",
 		"ts-node": "^10.9.1",
-		"typescript": "^5.0.4"
+		"typescript": "^5.0.4",
+		"husky": "^8.0.0"
 	},
 	"dependencies": {
 		"@aws-sdk/client-cloudwatch-logs": "^3.321.1",
@@ -64,5 +66,11 @@
 		"inquirer-fuzzy-path": "^2.3.0",
 		"inquirer-interrupted-prompt": "^3.0.0",
 		"ora": "^6.3.0"
+	},
+	"lint-staged": {
+		"**/*.{ts,js,tsx,json,css,scss}": [
+			"prettier --write",
+			"eslint --cache --fix"
+		]
 	}
 }
