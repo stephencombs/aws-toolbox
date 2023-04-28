@@ -7,8 +7,6 @@
 
 > _AWS Toolbox aims to provide a variety of handmade tools to help increase your productivity performing menial tasks that would take much longer to find through the Management Console._
 
-Complete your work from the terminal, without touching your mouse.
-
 _Known issues are tracked [here](./known_issues.md)_
 
 ## Installation
