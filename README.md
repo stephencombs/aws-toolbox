@@ -2,6 +2,7 @@
 
 [![npm](https://img.shields.io/npm/v/aws-toolbox)](https://www.npmjs.com/package/aws-toolbox)
 [![npm](https://img.shields.io/npm/dw/aws-toolbox)](https://www.npmjs.com/package/aws-toolbox)
+[![npm](https://img.shields.io/npm/l/aws-toolbox)](https://www.npmjs.com/package/aws-toolbox)
 
 **Complete your work from the terminal, without touching your mouse.**
 
