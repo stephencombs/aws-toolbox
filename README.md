@@ -7,7 +7,9 @@
 
 > _AWS Toolbox aims to provide a variety of handmade tools to help increase your productivity performing menial tasks that would take much longer to find through the Management Console._
 
-_Known issues are tracked [here](./known_issues)_
+Complete your work from the terminal, without touching your mouse.
+
+_Known issues are tracked [here](./known_issues.md)_
 
 ## Installation
 
@@ -27,11 +29,11 @@ then run it from your terminal:
 
 ## Features
 
--   [DynamoDB](./ddb/README)
+-   [DynamoDB](./src/ddb/README.md)
     -   Copy
     -   Clear
     -   List
--   [S3](./s3/README)
+-   [S3](./src/s3/README.md)
     -   Copy
     -   Clear
     -   Download
