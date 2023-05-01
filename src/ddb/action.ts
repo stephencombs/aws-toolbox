@@ -1,14 +1,13 @@
 import inquirer from 'inquirer'
 import { boldBlue, boldRed, boldYellow } from '../common/colors.js'
-import { fuzzySearch } from '../common/utils.js'
 import { autocomplete } from '../common/prompts.js'
 import { DynamoService } from './service.js'
 
 const ddbService = new DynamoService()
-const tableSource = await ddbService.getTables()
 
 // Action Prompts
 export async function clearPrompt() {
+	const tableSource = await ddbService.getTables()
 	const { name } = await inquirer.prompt([
 		autocomplete({ name: 'name', message: `Select a table to clear:`, source: tableSource })
 	])
@@ -23,6 +22,7 @@ export async function clearPrompt() {
 }
 
 export async function copyPrompt() {
+	const tableSource = await ddbService.getTables()
 	const { source, dest } = await inquirer.prompt([
 		autocomplete({ name: 'source', message: `Select the ${boldBlue('source')} table:`, source: tableSource }),
 		autocomplete({
