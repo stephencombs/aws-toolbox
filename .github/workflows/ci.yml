@@ -21,13 +21,16 @@ jobs:
               uses: actions/setup-node@v3
 
             - name: Install dependencies
-              run: pnpm ci
+              run: pnpm install
 
             - name: XO Linter
               run: pnpm run lint:ci
 
             - name: Prettier Formatter
               run: pnpm run prettier:ci
+
+            - name: Start Docker Test Environment
+              run: docker compose up
 
             - name: Jest Tests
               id: jest_test
@@ -47,6 +50,9 @@ jobs:
                   #   with:
                   #       name: coverage-report
                   #       path: coverage
+
+            - name: Stop Docker Test Environment
+              run: docker compose down
 
             - name: Build project
               run: npm run build
