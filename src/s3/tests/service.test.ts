@@ -14,10 +14,12 @@ jest.mock('@aws-sdk/client-s3')
 describe('S3Service', () => {
 	const localstackEndpoint = 'https://s3.localhost.localstack.cloud:4566'
 	const s3Service = new S3Service({
-		endpoint: localstackEndpoint
+		endpoint: localstackEndpoint,
+		region: 'us-east-2'
 	})
 	const s3Client = new S3Client({
-		endpoint: localstackEndpoint
+		endpoint: localstackEndpoint,
+		region: 'us-east-2'
 	})
 	const testBucket1 = 'test'
 	const testBucket2 = 'test2'

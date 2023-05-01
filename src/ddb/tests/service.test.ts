@@ -11,10 +11,12 @@ import { DynamoService } from '../service.js'
 describe('DynamoDBService', () => {
 	const localstackEndpoint = 'https://dynamo.localhost.localstack.cloud:4566'
 	const dynamoDbService = new DynamoService({
-		endpoint: localstackEndpoint
+		endpoint: localstackEndpoint,
+		region: 'us-east-2'
 	})
 	const ddbClient = new DynamoDBClient({
-		endpoint: localstackEndpoint
+		endpoint: localstackEndpoint,
+		region: 'us-east-2'
 	})
 	const testTable1 = 'test'
 	const testTable2 = 'test2'
