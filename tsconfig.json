@@ -10,5 +10,6 @@
 		"sourceMap": true,
 		"esModuleInterop": true,
 		"allowSyntheticDefaultImports": true
-	}
+	},
+	"exclude": ["src/**/*.test.ts"]
 }
