@@ -30,7 +30,7 @@ jobs:
               run: pnpm run prettier:ci
 
             - name: Start Docker Test Environment
-              run: docker compose up
+              run: docker compose up -d
 
             - name: Jest Tests
               id: jest_test
