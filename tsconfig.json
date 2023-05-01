@@ -1,14 +1,14 @@
 {
-    "compilerOptions": {
-        "rootDir": "src",
-        "outDir": "bin",
-        "lib": ["es6", "es2015", "dom"],
-        "moduleResolution": "nodenext",
-        "target": "es2022",
-        "module": "es2022",
-        "declaration": true,
-        "strict": true,
-        "sourceMap": true,
-        "esModuleInterop": true
-    }
+	"compilerOptions": {
+		"rootDir": "src",
+		"outDir": "bin",
+		"target": "es2017",
+		"module": "es2022",
+		"moduleResolution": "node",
+		"declaration": true,
+		"strict": true,
+		"sourceMap": true,
+		"esModuleInterop": true,
+		"allowSyntheticDefaultImports": true
+	}
 }

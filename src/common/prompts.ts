@@ -1,6 +1,6 @@
 import chalk from 'chalk'
-import { fuzzySearch } from './utils.js'
 import inquirer from 'inquirer'
+import { fuzzySearch } from './utils.js'
 
 export function autocomplete(config: { name: string; message: string; source: string[] }) {
 	return {
@@ -9,11 +9,11 @@ export function autocomplete(config: { name: string; message: string; source: st
 		name: config.name,
 		message: config.message,
 		pageSize: 10,
-		source: async (_: unknown, input = '') => await fuzzySearch(input, config.source)
+		source: async (_: unknown, input = '') => fuzzySearch(input, config.source)
 	}
 }
 
-export function confirm(config: { name: string; message: string }) {
+export async function confirm(config: { name: string; message: string }) {
 	return inquirer.prompt({
 		type: 'confirm',
 		prefix: '✅',

@@ -1,8 +1,8 @@
 import inquirer from 'inquirer'
 import { boldBlue, boldRed, boldYellow } from '../common/colors.js'
 import { fuzzySearch } from '../common/utils.js'
-import { DynamoService } from './service.js'
 import { autocomplete } from '../common/prompts.js'
+import { DynamoService } from './service.js'
 
 const ddbService = new DynamoService()
 const tableSource = await ddbService.getTables()
@@ -20,7 +20,6 @@ export async function clearPrompt() {
 		)}`
 	})
 	if (confirmed) await ddbService.clear(name)
-	return
 }
 
 export async function copyPrompt() {

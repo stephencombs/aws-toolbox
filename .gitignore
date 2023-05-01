@@ -131,3 +131,6 @@ dist
 
 # Binary Files
 bin
+
+# Docker Test Environment
+volume

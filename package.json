@@ -13,11 +13,14 @@
 	"scripts": {
 		"build": "npx tsc",
 		"local": "npm i -g . && aws-toolbox",
-		"test": "echo \"Error: no test specified\" && exit 1",
-		"prepare": "husky install"
+		"test": "NODE_OPTIONS=--experimental-vm-modules NODE_NO_WARNINGS=1 jest",
+		"test:ci": "NODE_OPTIONS=--experimental-vm-modules NODE_NO_WARNINGS=1 xo && jest",
+		"xo:fix": "xo --fix",
+		"prepare": "husky install",
+		"prettier": "prettier --write ."
 	},
 	"type": "module",
-	"main": "./bin/index.js",
+	"main": "bin/index.js",
 	"bin": {
 		"aws-toolbox": "./bin/index.js"
 	},
@@ -31,21 +34,24 @@
 		"aws-sdk"
 	],
 	"devDependencies": {
+		"@babel/core": "^7.21.5",
+		"@babel/preset-env": "^7.21.5",
+		"@babel/preset-typescript": "^7.21.5",
+		"@jest/globals": "^29.5.0",
 		"@types/inquirer": "^9.0.3",
 		"@types/inquirer-autocomplete-prompt": "^3.0.0",
 		"@types/inquirer-fuzzy-path": "^2.3.6",
+		"@types/jest": "^29.5.1",
 		"@types/mute-stream": "^0.0.1",
 		"@types/node": "^18.16.0",
-		"@typescript-eslint/eslint-plugin": "^5.59.1",
-		"@typescript-eslint/parser": "^5.59.1",
-		"eslint": "^8.39.0",
-		"eslint-config-prettier": "^8.8.0",
-		"eslint-plugin-prettier": "^4.2.1",
+		"babel-jest": "^29.5.0",
+		"husky": "^8.0.0",
+		"jest": "^29.5.0",
 		"nodemon": "^2.0.22",
 		"prettier": "^2.8.8",
-		"ts-node": "^10.9.1",
+		"ts-jest": "^29.1.0",
 		"typescript": "^5.0.4",
-		"husky": "^8.0.0"
+		"xo": "^0.54.2"
 	},
 	"dependencies": {
 		"@aws-sdk/client-cloudwatch-logs": "^3.321.1",
@@ -70,7 +76,24 @@
 	"lint-staged": {
 		"**/*.{ts,js,tsx,json,css,scss}": [
 			"prettier --write",
-			"eslint --cache --fix"
+			"xo --cache --fix"
 		]
+	},
+	"xo": {
+		"envs": [
+			"es2022",
+			"es6",
+			"es2015"
+		],
+		"semicolon": false,
+		"prettier": true,
+		"rules": {
+			"camelcase": 0,
+			"@typescript-eslint/naming-convention": 0,
+			"@typescript-eslint/no-unsafe-argument": 0,
+			"@typescript-eslint/no-unsafe-assignment": 0,
+			"@typescript-eslint/restrict-template-expressions": 0,
+			"@typescript-eslint/no-unsafe-call": 0
+		}
 	}
 }

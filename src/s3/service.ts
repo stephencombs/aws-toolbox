@@ -4,7 +4,7 @@ import {
 	ListBucketsCommand,
 	ListObjectsV2Command,
 	PutObjectCommand,
-	S3ClientConfig
+	type S3ClientConfig
 } from '@aws-sdk/client-s3'
 import { oraPromise } from 'ora'
 import { getS3Client } from '../common/clients.js'
@@ -15,7 +15,7 @@ export class S3Service {
 
 	async getBuckets() {
 		const results = await getS3Client(this.s3ClientConfig).send(new ListBucketsCommand({}))
-		return results.Buckets?.map((bucket) => bucket.Name).filter((name): name is string => !!name) ?? []
+		return (results.Buckets?.map((bucket) => bucket.Name).filter(Boolean) as string[]) ?? []
 	}
 
 	async getBucketObjects(bucket: string) {
@@ -34,13 +34,14 @@ export class S3Service {
 		return results.Contents ?? []
 	}
 
-	async getBucketObjectNames(bucket: string) {
+	async getBucketObjectKeys(bucket: string) {
 		const results = await this.getBucketObjects(bucket)
-		return results.map((bucket) => bucket.Key).filter((name): name is string => !!name) ?? []
+		return (results.map((bucket) => bucket.Key).filter(Boolean) as string[]) ?? []
 	}
 
 	async clear(bucket: string) {
-		const objectKeys = (await this.getBucketObjects(bucket)).map((object) => object.Key)
+		const objects = await this.getBucketObjects(bucket)
+		const objectKeys = objects.map((object) => object.Key)
 
 		const results = await oraPromise(
 			getS3Client(this.s3ClientConfig).send(
@@ -66,7 +67,8 @@ export class S3Service {
 	}
 
 	async copy(source: string, dest: string) {
-		const objectKeys = (await this.getBucketObjects(source)).map((object) => object.Key)
+		const objects = await this.getBucketObjects(source)
+		const objectKeys = objects.map((object) => object.Key)
 
 		await oraPromise(
 			Promise.all(
@@ -103,6 +105,6 @@ export class S3Service {
 			})
 		)
 
-		return await result.Body?.transformToString()
+		return result.Body?.transformToString()
 	}
 }

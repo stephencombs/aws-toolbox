@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import { exit } from 'node:process'
 import { GetCallerIdentityCommand, STSClient } from '@aws-sdk/client-sts'
 import select from '@inquirer/select'
 import chalk from 'chalk'
@@ -7,7 +8,6 @@ import inquirer from 'inquirer'
 import autocompletePrompt from 'inquirer-autocomplete-prompt'
 import fuzzypathPrompt from 'inquirer-fuzzy-path'
 import { oraPromise } from 'ora'
-import { exit } from 'process'
 import { awsOrange, boldWhite } from './common/colors.js'
 import { confirm } from './common/prompts.js'
 import { prettifyActions } from './common/utils.js'
@@ -25,14 +25,11 @@ try {
 		text: 'Checking for valid credentials'
 	})
 	console.clear()
-} catch (e: unknown) {
-	if (e instanceof Error)
-		if (e.name === 'CredentialsProviderError')
-			console.log(
-				chalk.red(
-					`Your credientials are invalid or expired, please login using ${boldWhite('`aws sso login`')}`
-				)
-			)
+} catch (error: unknown) {
+	if (error instanceof Error && error.name === 'CredentialsProviderError')
+		console.log(
+			chalk.red(`Your credientials are invalid or expired, please login using ${boldWhite('`aws sso login`')}`)
+		)
 	exit(1)
 }
 
@@ -66,15 +63,24 @@ async function init() {
 	})) as GetActions<typeof toolboxChoices>
 
 	switch (tool) {
-		case 'ddb':
+		case 'ddb': {
 			await ddbActionsPrompt()
 			break
-		case 's3':
+		}
+
+		case 's3': {
 			await s3ActionsPrompt()
 			break
-		case 'secrets':
+		}
+
+		case 'secrets': {
 			await secretsActionPrompt()
 			break
+		}
+
+		default: {
+			exit(1)
+		}
 	}
 
 	// Check if user would like to perform another action

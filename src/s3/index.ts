@@ -1,3 +1,4 @@
+import { exit } from 'node:process'
 import select from '@inquirer/select'
 import { clearPrompt, copyPrompt, downloadPrompt, listObjectsPrompt } from './action.js'
 
@@ -38,17 +39,28 @@ export async function s3ActionsPrompt() {
 	})) as GetActions<typeof s3Actions>
 
 	switch (choice) {
-		case 'copy':
+		case 'copy': {
 			await copyPrompt()
 			break
-		case 'clear':
+		}
+
+		case 'clear': {
 			await clearPrompt()
 			break
-		case 'listObjs':
+		}
+
+		case 'listObjs': {
 			await listObjectsPrompt()
 			break
-		case 'download':
+		}
+
+		case 'download': {
 			await downloadPrompt()
 			break
+		}
+
+		default: {
+			exit(1)
+		}
 	}
 }

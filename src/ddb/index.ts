@@ -1,3 +1,4 @@
+import { exit } from 'node:process'
 import select from '@inquirer/select'
 import { clearPrompt, copyPrompt, listPrompt } from './action.js'
 
@@ -27,14 +28,23 @@ export async function ddbActionsPrompt() {
 	})) as GetActions<typeof dynamoDbActions>
 
 	switch (choice) {
-		case 'copy':
+		case 'copy': {
 			await copyPrompt()
 			break
-		case 'clear':
+		}
+
+		case 'clear': {
 			await clearPrompt()
 			break
-		case 'list':
+		}
+
+		case 'list': {
 			await listPrompt()
 			break
+		}
+
+		default: {
+			exit(1)
+		}
 	}
 }

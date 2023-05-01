@@ -1,8 +1,8 @@
-import fuzzy from 'fuzzy'
+import { filter } from 'fuzzy'
 import { boldGreen } from './colors.js'
 
-export function fuzzySearch(input: string, source: string[]) {
-	return Promise.resolve(fuzzy.filter(input, source).map((result) => result.original))
+export async function fuzzySearch(input: string, source: string[]) {
+	return filter(input, source).map((result) => result.original)
 }
 
 export function prettifyActions(actions: Readonly<SelectChoices>) {

@@ -1,4 +1,4 @@
-import { DescribeTableCommand, DynamoDBClientConfig, ListTablesCommand } from '@aws-sdk/client-dynamodb'
+import { DescribeTableCommand, type DynamoDBClientConfig, ListTablesCommand } from '@aws-sdk/client-dynamodb'
 import ora, { oraPromise } from 'ora'
 import { getDynamoDBClient } from '../common/clients.js'
 import { boldBlue, boldRed, boldYellow } from '../common/colors.js'
@@ -25,7 +25,7 @@ export class DynamoService {
 	}
 
 	async clear(source: string): Promise<void> {
-		let data: Record<string, unknown>[] | undefined = []
+		let data: Array<Record<string, unknown>> | undefined = []
 
 		const result = await oraPromise(
 			getDynamoDBClient(this.ddbClientConfig).scan({
@@ -68,7 +68,7 @@ export class DynamoService {
 
 		await oraPromise(
 			Promise.all(
-				data.map((item) =>
+				data.map(async (item) =>
 					getDynamoDBClient(this.ddbClientConfig).delete({
 						TableName: source.trim(),
 						Key: {
@@ -86,7 +86,7 @@ export class DynamoService {
 	}
 
 	async copy(source: string, dest: string) {
-		let data: Record<string, unknown>[] | undefined = []
+		let data: Array<Record<string, unknown>> | undefined = []
 
 		const result = await oraPromise(
 			getDynamoDBClient(this.ddbClientConfig).scan({
@@ -108,7 +108,7 @@ export class DynamoService {
 
 		await oraPromise(
 			Promise.all(
-				data.map((item) =>
+				data.map(async (item) =>
 					getDynamoDBClient(this.ddbClientConfig).put({
 						TableName: dest.trim(),
 						Item: item,

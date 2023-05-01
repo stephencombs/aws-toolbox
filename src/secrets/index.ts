@@ -1,3 +1,4 @@
+import { exit } from 'node:process'
 import select from '@inquirer/select'
 import { describePrompt, listPrompt } from './action.js'
 
@@ -22,11 +23,18 @@ export async function secretsActionPrompt() {
 	})) as GetActions<typeof secretsActions>
 
 	switch (choice) {
-		case 'describe':
+		case 'describe': {
 			await describePrompt()
 			break
-		case 'list':
+		}
+
+		case 'list': {
 			await listPrompt()
 			break
+		}
+
+		default: {
+			exit(1)
+		}
 	}
 }

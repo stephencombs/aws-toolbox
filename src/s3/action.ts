@@ -1,10 +1,10 @@
+import { writeFileSync } from 'node:fs'
 import chalk from 'chalk'
-import { writeFileSync } from 'fs'
-import inquirer from 'inquirer'
+import inquirer, { type QuestionCollection } from 'inquirer'
 import { boldBlue, boldGreen, boldRed, boldWhite, boldYellow } from '../common/colors.js'
 import { autocomplete, confirm, fuzzypath } from '../common/prompts.js'
-import { S3Service } from './service.js'
 import { paddingTopBottom } from '../common/utils.js'
+import { S3Service } from './service.js'
 
 const s3Service = new S3Service()
 
@@ -12,7 +12,7 @@ export async function clearPrompt() {
 	const bucketNames = await s3Service.getBuckets()
 	const { name } = await inquirer.prompt([
 		autocomplete({ name: 'name', message: `Select a bucket to clear:`, source: bucketNames })
-	])
+	] as QuestionCollection)
 	const { confirmed } = await confirm({
 		name: 'confirmed',
 		message: `${chalk.red.bold(
@@ -20,7 +20,6 @@ export async function clearPrompt() {
 		)}`
 	})
 	if (confirmed) await s3Service.clear(name)
-	return
 }
 
 export async function copyPrompt() {
@@ -48,7 +47,7 @@ export async function downloadPrompt() {
 		autocomplete({ name: 'bucket', message: `Select a bucket:`, source: bucketNames })
 	])
 	// Get the object Key
-	const objectNames = await s3Service.getBucketObjectNames(bucket)
+	const objectNames = await s3Service.getBucketObjectKeys(bucket)
 	const { object } = await inquirer.prompt([
 		autocomplete({ name: 'object', message: `Select an object:`, source: objectNames })
 	])
