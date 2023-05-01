@@ -1,8 +1,9 @@
-import { filter } from 'fuzzy'
+import fuzzy from 'fuzzy'
 import { boldGreen } from './colors.js'
 
 export async function fuzzySearch(input: string, source: string[]) {
-	return filter(input, source).map((result) => result.original)
+	// eslint-disable-next-line unicorn/no-array-callback-reference, unicorn/no-array-method-this-argument
+	return fuzzy.filter(input, source).map((result) => result.original)
 }
 
 export function prettifyActions(actions: Readonly<SelectChoices>) {
