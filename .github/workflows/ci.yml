@@ -3,44 +3,48 @@ name: Pull Request CI
 on: push
 
 jobs:
-    build_and_test:
-        name: Build and Test
+  build_and_test:
+    name: Build and Test
 
-        runs-on: ubuntu-latest
+    runs-on: ubuntu-latest
 
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v3
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-            - name: Use Node.js
-              uses: actions/setup-node@v3
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
 
-            - name: Install dependencies
-              run: pnpm ci
+      - name: Use Node.js
+        uses: actions/setup-node@v3
 
-            - name: XO Linter
-              run: pnpm run lint:ci
+      - name: Install dependencies
+        run: pnpm ci
 
-            - name: Prettier Formatter
-              run: pnpm run prettier:ci
+      - name: XO Linter
+        run: pnpm run lint:ci
 
-            - name: Jest Tests
-              id: jest_test
-              run: pnpm run test:ci
+      - name: Prettier Formatter
+        run: pnpm run prettier:ci
 
-            # - name: Upload Jest Test Artifacts
-            #   uses: actions/upload-artifact@v3
-            #   if: steps.jest_test.conclusion != 'skipped'
-            #   with:
-            #       name: jest-test-report
-            #       path: junit.xml
+      - name: Jest Tests
+        id: jest_test
+        run:
+          pnpm run test:ci
 
-            # - name: Upload Coverage Artifacts
-            #   uses: actions/upload-artifact@v3
-            #   if: steps.jest_test.conclusion != 'skipped'
-            #   with:
-            #       name: coverage-report
-            #       path: coverage
+          # - name: Upload Jest Test Artifacts
+          #   uses: actions/upload-artifact@v3
+          #   if: steps.jest_test.conclusion != 'skipped'
+          #   with:
+          #       name: jest-test-report
+          #       path: junit.xml
 
-            - name: Build project
-              run: npm run build
+          # - name: Upload Coverage Artifacts
+          #   uses: actions/upload-artifact@v3
+          #   if: steps.jest_test.conclusion != 'skipped'
+          #   with:
+          #       name: coverage-report
+          #       path: coverage
+
+      - name: Build project
+        run: npm run build
